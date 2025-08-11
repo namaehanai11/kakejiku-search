@@ -1,8 +1,30 @@
+// script.js
 // 掛け軸データ配列（localStorageから読み込み）
 let kakejikuList = JSON.parse(localStorage.getItem("kakejikuList")) || [];
 
 function saveData() {
   localStorage.setItem("kakejikuList", JSON.stringify(kakejikuList));
+}
+
+function addKakejiku() {
+  const name = document.getElementById("name").value.trim();
+  const feature = document.getElementById("feature").value.trim();
+  const imageFile = document.getElementById("image").files[0];
+  if (!name || !feature || !imageFile) {
+    alert("すべての項目を入力してください");
+    return;
+  }
+  const reader = new FileReader();
+  reader.onload = function (e) {
+    kakejikuList.push({ name, feature, image: e.target.result });
+    saveData();
+    alert("掛け軸を登録しました！");
+    document.getElementById("name").value = "";
+    document.getElementById("feature").value = "";
+    document.getElementById("image").value = "";
+    search();
+  };
+  reader.readAsDataURL(imageFile);
 }
 
 function search() {
@@ -11,9 +33,13 @@ function search() {
   resultsDiv.innerHTML = "";
 
   // キーワード空なら全部表示、そうでなければ部分一致フィルター
-  const results = keyword === "" ? kakejikuList : kakejikuList.filter(item =>
-    item.name.includes(keyword) || item.feature.includes(keyword)
-  );
+  const results =
+    keyword === ""
+      ? kakejikuList
+      : kakejikuList.filter(
+          (item) =>
+            item.name.includes(keyword) || item.feature.includes(keyword)
+        );
 
   if (results.length === 0) {
     resultsDiv.innerHTML = "<p>該当する掛け軸は見つかりませんでした。</p>";
@@ -24,19 +50,18 @@ function search() {
     const div = document.createElement("div");
     div.className = "item";
 
-    // 編集モードかどうか判定（ここは例として、編集中のindexを保持する変数を使う）
     if (item.isEditing) {
-      // 編集フォーム表示
       div.innerHTML = `
-        <input type="text" id="editName${index}" value="${item.name}">
-        <br>
-        <input type="text" id="editFeature${index}" value="${item.feature}">
-        <br>
-        <button onclick="saveEdit(${index})">保存</button>
-        <button onclick="cancelEdit(${index})">キャンセル</button>
+        <label for="editName${index}">名前:</label><br>
+        <input type="text" id="editName${index}" value="${item.name}" autocomplete="off"><br>
+        <label for="editFeature${index}">特徴:</label><br>
+        <input type="text" id="editFeature${index}" value="${item.feature}" autocomplete="off"><br>
+        <div class="edit-buttons">
+          <button onclick="saveEdit(${index})">保存</button>
+          <button onclick="cancelEdit(${index})" class="cancel-btn">キャンセル</button>
+        </div>
       `;
     } else {
-      // 通常表示＋編集・削除ボタン
       div.innerHTML = `
         <strong>${item.name}</strong><br>
         ${item.feature}<br>
@@ -50,19 +75,16 @@ function search() {
   });
 }
 
-// 編集開始
 function startEdit(index) {
   kakejikuList[index].isEditing = true;
   search();
 }
 
-// 編集キャンセル
 function cancelEdit(index) {
   delete kakejikuList[index].isEditing;
   search();
 }
 
-// 編集保存
 function saveEdit(index) {
   const newName = document.getElementById(`editName${index}`).value.trim();
   const newFeature = document.getElementById(`editFeature${index}`).value.trim();
@@ -77,7 +99,6 @@ function saveEdit(index) {
   search();
 }
 
-// 削除（引数をindexに変更）
 function deleteKakejiku(index) {
   if (!confirm(`${kakejikuList[index].name} を削除しますか？`)) return;
   kakejikuList.splice(index, 1);

@@ -1,7 +1,9 @@
+<!-- index.html -->
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-<meta charset="UTF-8">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>掛け軸登録・検索</title>
 <style>
   body {
@@ -21,7 +23,8 @@
     border: 1px solid #ccc;
     border-radius: 4px;
   }
-  input, button {
+  input,
+  button {
     width: 100%;
     box-sizing: border-box;
     margin: 8px 0;
@@ -31,42 +34,75 @@
     border-radius: 4px;
   }
   button {
-    background-color: #007BFF;
+    background-color: #007bff;
     color: white;
     border: none;
+    cursor: pointer;
   }
   button:hover {
     background-color: #0056b3;
   }
-  /* 小さめの画面でも見やすいようにフォントサイズ調整 */
   @media (max-width: 400px) {
     body {
       padding: 8px;
     }
-    input, button {
+    input,
+    button {
       font-size: 1em;
       padding: 10px;
     }
   }
+
+  /* 編集ボタン横並び */
+  .edit-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 8px;
+  }
+
+  .edit-buttons button {
+    flex: 1;
+    padding: 12px 0;
+    font-size: 1.1em;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+  }
+
+  .edit-buttons button:hover {
+    opacity: 0.9;
+  }
+
+  .edit-buttons .cancel-btn {
+    background-color: #ccc;
+    color: #333;
+  }
+
+  .edit-buttons button:not(.cancel-btn) {
+    background-color: #007bff;
+    color: white;
+  }
 </style>
 </head>
 <body>
+  <h1>掛け軸登録・検索システム</h1>
 
-<h1>掛け軸登録・検索システム</h1>
+  <h2>掛け軸登録</h2>
+  名前: <input type="text" id="name" />
+  <br />
+  特徴: <input type="text" id="feature" />
+  <br />
+  画像ファイル: <input type="file" id="image" accept="image/*" />
+  <br />
+  <button onclick="addKakejiku()">登録</button>
 
-<h2>掛け軸登録</h2>
-名前: <input type="text" id="name"><br>
-特徴: <input type="text" id="feature"><br>
-画像ファイル: <input type="file" id="image" accept="image/*"><br>
-<button onclick="addKakejiku()">登録</button>
+  <h2>検索</h2>
+  キーワード: <input type="text" id="keyword" />
+  <button onclick="search()">検索</button>
 
-<h2>検索</h2>
-キーワード: <input type="text" id="keyword">
-<button onclick="search()">検索</button>
+  <h2>結果</h2>
+  <div id="results"></div>
 
-<h2>結果</h2>
-<div id="results"></div>
-
-<script src="script.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
