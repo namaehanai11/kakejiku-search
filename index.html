@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>掛け軸登録・検索</title>
+<style>
+  body {
+    font-family: sans-serif;
+    padding: 10px;
+    max-width: 600px;
+    margin: auto;
+  }
+  .item {
+    margin: 20px 0;
+  }
+  img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  input, button {
+    width: 100%;
+    box-sizing: border-box;
+    margin: 8px 0;
+    padding: 12px;
+    font-size: 1.1em;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  button {
+    background-color: #007BFF;
+    color: white;
+    border: none;
+  }
+  button:hover {
+    background-color: #0056b3;
+  }
+  /* 小さめの画面でも見やすいようにフォントサイズ調整 */
+  @media (max-width: 400px) {
+    body {
+      padding: 8px;
+    }
+    input, button {
+      font-size: 1em;
+      padding: 10px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<h1>掛け軸登録・検索システム</h1>
+
+<h2>掛け軸登録</h2>
+名前: <input type="text" id="name"><br>
+特徴: <input type="text" id="feature"><br>
+画像ファイル: <input type="file" id="image" accept="image/*"><br>
+<button onclick="addKakejiku()">登録</button>
+
+<h2>検索</h2>
+キーワード: <input type="text" id="keyword">
+<button onclick="search()">検索</button>
+
+<h2>結果</h2>
+<div id="results"></div>
+
+<script src="script.js"></script>
+</body>
+</html>
